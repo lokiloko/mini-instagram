@@ -41,6 +41,22 @@ class PostCtrl {
       res.status(500).send(err)
     })
   }
+  static addComment(req, res, next){
+    req.body._id = req.params.id;
+    model.Post.addComment(req.body).then((data)=>{
+      res.status(200).send(data)
+    }).catch((err)=>{
+      res.status(500).send(err)
+    })
+  }
+  static giveLove(req, res, next){
+    req.body._id = req.params.id;
+    model.Post.giveLove(req.body).then((data)=>{
+      res.status(200).send(data)
+    }).catch((err)=>{
+      res.status(500).send(err)
+    })
+  }
 }
 
 module.exports = PostCtrl;
