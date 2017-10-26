@@ -1,5 +1,5 @@
 Vue.component('my-component', {
-  template: `<span>{{ message }}</span>`,
+  template: `<span>{{ message vue }}</span>`,
   data: {
     message: 'hello'
   }
