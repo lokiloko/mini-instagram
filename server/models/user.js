@@ -88,7 +88,7 @@ class Model {
   }
   static delete(id) {
     return new Promise((resolve, reject) => {
-      User.findOneAndUpdate({"_id":id}).then((data) => {
+      User.findOneAndRemove({"_id":id}).then((data) => {
         var obj = {
           message: 'Delete Success',
           data: data

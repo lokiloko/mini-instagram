@@ -16,13 +16,14 @@ class UserCtrl {
     })
   }
   static create(req, res, next) {
-    model.User.create(req.body).then((data)=>{
+    model.User.create(req.body, req.file).then((data)=>{
       res.status(200).send(data)
     }).catch((err)=>{
       res.status(500).send(err)
     })
   }
   static update(req, res, next) {
+    req.body._id = req.params.id;
     model.User.update(req.body).then((data)=>{
       res.status(200).send(data)
     }).catch((err)=>{
