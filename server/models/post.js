@@ -1,9 +1,9 @@
 var idvalidator = require('mongoose-id-validator');
-
+var jwt = require('jsonwebtoken');
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema
 mongoose.connect('mongodb://admin:admin@cluster0-shard-00-00-jlkah.mongodb.net:27017,cluster0-shard-00-01-jlkah.mongodb.net:27017,cluster0-shard-00-02-jlkah.mongodb.net:27017/mini?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin');
-// mongoose.Promise = global.Promise;
+mongoose.Promise = global.Promise;
 var postSchema = new Schema({
   post: {
     type: String,
@@ -71,6 +71,9 @@ class Model {
     })
   }
   static create(insert, file) {
+    jwt.verify(insert.posted_by, process.env.JWT_KEY, function(err, decoded) {
+      insert.posted_by = decoded._id
+    });
     return new Promise((resolve, reject) => {
       Post.create({
         post: insert.post,
@@ -125,20 +128,23 @@ class Model {
     })
   }
   static addComment(comment) {
+    jwt.verify(comment.user, process.env.JWT_KEY, function(err, decoded) {
+      comment.user = decoded._id
+    });
     return new Promise((resolve, reject) => {
       Post.findOneAndUpdate({
         "_id": comment._id
       }, {
         $push: {
           comment: {
-            user:comment.user,
-            comment:comment.comment
+            user: comment.user,
+            comment: comment.comment
           }
         }
       }, {
         safe: true,
         upsert: true
-      },).then((data) => {
+      }, ).then((data) => {
         var obj = {
           message: 'Add Comment Success',
           data: data
@@ -149,31 +155,35 @@ class Model {
       })
     })
   }
-  static giveLove(love){
+  static giveLove(love) {
+    jwt.verify(love.user, process.env.JWT_KEY, function(err, decoded) {
+      love.user = decoded._id
+    });
     return new Promise((resolve, reject) => {
-      Post.findOne({"_id":love._id}).then((post)=>{
+      Post.findOne({
+        "_id": love._id
+      }).then((post) => {
         var ada = ""
-        post.love.forEach(p =>{
-          if(p.user.toString() == love.user){
+        post.love.forEach(p => {
+          if (p.user.toString() == love.user) {
             ada = "ada"
           }
         })
-        if(ada == "ada") {
+        if (ada == "ada") {
           reject('Already loved');
-        }
-        else {
+        } else {
           Post.findOneAndUpdate({
             "_id": love._id
           }, {
             $push: {
               love: {
-                user:love.user,
+                user: love.user,
               }
             }
           }, {
             safe: true,
             upsert: true
-          },).then((data) => {
+          }, ).then((data) => {
             var obj = {
               message: 'Add Love Success',
               data: data
@@ -183,7 +193,7 @@ class Model {
             reject(err)
           })
         }
-      }).catch((err)=>{
+      }).catch((err) => {
         console.log(err)
       })
     })
