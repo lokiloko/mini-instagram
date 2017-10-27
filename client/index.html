@@ -10,24 +10,44 @@
   <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
   <script src="https://unpkg.com/vue"></script>
   <style type="text/css">
-    body {
-      background-color: #DADADA;
-    }
-    body > .grid {
+
+    .grid {
       height: 100%;
+    }
+    .form {
+
     }
     .image {
       margin-top: -100px;
     }
     .column {
-      max-width: 450px;
+      height: 500px;
+      width: 850px;
     }
+    .header-menu{
+      background-color: white !important;
+    }
+    .login-heula {
+      background-color: #DADADA;
+      height: 100vh;
+      display: flex;
+      align-items:center;
+      justify-content: center;
+    }
+    .apa{
+      width: 50%;
+    }
+
+
   </style>
 </head>
 
 <body>
   <div id="app">
     <form-login></form-login>
+    <menu-header></menu-header>
+    <menu-index></menu-index>
+    <file-upload></file-upload>
   </div>
 
 
@@ -61,6 +81,7 @@
       }
     });
   });
+  $('#login-form').hide()
 </script>
 
 </html>
