@@ -8,10 +8,109 @@
   <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
   <script src="semantic/dist/semantic.min.js"></script>
   <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  <script src="https://unpkg.com/vue"></script>
+  <style type="text/css">
+    body {
+      background-color: #DADADA;
+    }
+    body > .grid {
+      height: 100%;
+    }
+    .image {
+      margin-top: -100px;
+    }
+    .column {
+      max-width: 450px;
+    }
+  </style>
 </head>
 
 <body>
+  <div id="app">
+    <form-register></form-register>
+  </div>
+
 
 </body>
+
+
+<script src="script.js"></script>
+
+<script>
+  $(document).ready(function() {
+    $('.ui.form')
+      .form({
+        fields: {
+          name: {
+            identifier: 'name',
+            rules: [
+              {
+                type   : 'empty',
+                prompt : 'Please enter your name'
+              }
+            ]
+          },
+
+          username: {
+            identifier: 'username',
+            rules: [
+              {
+                type   : 'empty',
+                prompt : 'Please enter a username'
+              }
+            ]
+          },
+          password: {
+            identifier: 'password',
+            rules: [
+              {
+                type   : 'empty',
+                prompt : 'Please enter a password'
+              },
+              {
+                type   : 'minLength[4]',
+                prompt : 'Your password must be at least {ruleValue} characters'
+              }
+            ]
+          },
+          password2: {
+            identifier: 'password2',
+            rules: [
+              {
+                type   : 'empty',
+                prompt : 'Please enter a password'
+              },
+              {
+                type   : 'match[password]',
+                prompt : 'Your password did not match '
+              }
+            ]
+          },
+          terms: {
+            identifier: 'terms',
+            rules: [
+              {
+                type   : 'checked',
+                prompt : 'You must agree to the terms and conditions'
+              }
+            ]
+          }
+        }
+    })
+  ;
+  });
+
+  $('button[type="submit"]').click(function(e) {
+     return $('.form').form('validate form');
+  });
+
+  $(document).ready(
+    function () {
+        $('.ui.checkbox')
+                .checkbox()
+                ;
+    });
+
+</script>
 
 </html>
