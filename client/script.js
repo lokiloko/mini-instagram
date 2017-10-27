@@ -64,17 +64,12 @@ Vue.component('menu-index', {
       <div class="ui container">
         <div class="ui left vertical menu">
           <div class="item">
-            <div class="header">My Profile</div>
-            <div class="menu">
-              <div class="ui simple dropdown item">
-                Handphone and Tablet
-                <i class="dropdown icon"></i>
-                <div class="menu">
-                  <a class="item"><i class="edit icon"></i> Edit Profile</a>
-                  <a class="item"><i class="globe icon"></i> Choose Language</a>
-                  <a class="item"><i class="settings icon"></i> Account Settings</a>
-                </div>
-              </div>
+            
+            <div class="item" id="upload-foto">
+              <button class="ui instagram button">
+                <i class="instagram icon"></i>
+                New Post
+              </button>
             </div>
           </div>
         </div>
@@ -142,17 +137,117 @@ Vue.component('menu-index', {
 Vue.component('file-upload',{
   template:`
     <div>
-      <form class="ui form segment">
-      <div class="field">
-        <label>File</label>
-        <input type="file" name="fileInput"></input>
+      <div class="ui modal">
+        <i class="close icon"></i>
+
+        <div class="image content">
+          <div class="ui medium image">
+
+          </div>
+          <form id="post" enctype="multipart/form-data" v-on:submit.prevent="uploadFile">
+
+            <input type="file" name="file" id="file" v-on:change="readURL">
+
+            <img id="blah" v-bind:src="image" alt="uploaded image">
+
+
+
+          </form>
+          <div class="description">
+            <div class="ui header">We've auto-chosen a profile image for you.</div>
+            <div class="ui left icon input">
+            <input placeholder="Add caption..." type="text" v-model:value="caption">
+            <i class="write icon"></i>
+            </div>
+          </div>
+        </div>
+        <div class="actions">
+          <div class="ui black deny button">
+            Cancel
+          </div>
+          <div class="ui positive right labeled icon button">
+            Upload
+            <i class="checkmark icon"></i>
+          </div>
+        </div>
       </div>
-      <div class="ui blue submit button">Submit</div>
-      <div class="ui reset button">Reset</div>
-      <div class="ui clear button">Clear</div>
-      </form>
+
     </div>`,
+    data: () => {
+
+      return {
+
+        image: '#',
+
+        caption: ''
+
+      }
+
+    },
+
+    methods: {
+
+      uploadFile() {
+
+        var data = new FormData();
+
+        data.append('post', this.caption);
+
+        data.append('posted_by', localStorage.getItem('token'));
+
+        data.append('imageFile', document.getElementById('file').files[0]);
+
+        axios.post('https://lokilokostudio.tk/api/posts', data)
+
+          .then(function(res) {
+
+            console.log(res)
+
+          })
+
+          .catch(function(err) {
+
+            console.log(err)
+
+          });
+
+      },
+
+      readURL(e) {
+
+        var files = e.target.files || e.dataTransfer.files;
+
+        if (!files.length)
+
+          return;
+
+        this.createImage(files[0]);
+
+      },
+
+      createImage(file) {
+
+        var image = new Image();
+
+        var reader = new FileReader();
+
+        var vm = this;
+
+        reader.onload = (e) => {
+
+          vm.image = e.target.result;
+
+        };
+
+        reader.readAsDataURL(file);
+
+      },
+
+    }
   })
+
+
+
 
 
 new Vue({
