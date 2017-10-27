@@ -328,8 +328,10 @@ Vue.component('menu-index', {
                   <div class="content" v-bind:id="post._id">
                     <div class="extra content">
                       <div class="ui large transparent left icon input" v-for="comment in post.comment">
-                        <i class="comment icon"></i>
-                        <input placeholder="Add Comment..." type="text" v-bind:value="comment.comment" disabled>
+                        <div class="extra content">
+                          <i class="comment icon"></i>{{comment.user.username}}
+                          <input type="text" v-bind:value="comment.comment" disabled>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -338,33 +340,7 @@ Vue.component('menu-index', {
               <div class="extra content">
                 <div class="ui large transparent left icon input">
                   <i class="heart outline icon"></i>
-                  <input placeholder="Add Comment..." type="text" v-on:keyup.enter="postComment(post._id)" v-bind:id="post._id">
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="five wide column">
-            <br>
-            <div class="ui card">
-              <div class="image">
-                <img src="https://media.licdn.com/mpr/mpr/shrinknp_200_200/AAEAAQAAAAAAAA0xAAAAJGY0ZDJmM2QyLTkyODEtNDIyZi1hNmI5LWFhYmEyNDFkOGUzZA.jpg">
-              </div>
-              <div class="content">
-                <div class="right floated meta">14h</div>
-                  Elliot
-              </div>
-              <div class="content">
-                <span class="right floated">
-                  <i class="heart outline like icon"></i>
-                  17 likes
-                </span>
-                <i class="comment icon"></i>
-                3 comments
-              </div>
-              <div class="extra content">
-                <div class="ui large transparent left icon input">
-                  <i class="heart outline icon"></i>
-                  <input placeholder="Add Comment..." type="text">
+                  <input placeholder="Add Comment..." type="text" v-on:keyup.enter="postComment(post._id)" v-bind:id="'comment'+post._id">
                 </div>
               </div>
             </div>
@@ -427,12 +403,17 @@ Vue.component('menu-index', {
     },
     postComment(id) {
       $('#loading').show();
-      var isiComment = $('#' + id).val();
+      var isiComment = $('#comment' + id).val();
       axios.post('https://lokilokostudio.tk/api/posts/addComment/' + id, {
           comment: isiComment,
           user: localStorage.getItem('token')
         })
         .then((response) => {
+          var index = this.posts.findIndex((element)=>{
+            if(element._id == id){
+              return element
+            }
+          })
           $('#loading').hide();
           this.title = 'Comment Success';
           this.message = 'You have successfully comment to this post';
@@ -454,6 +435,12 @@ Vue.component('menu-index', {
           user: localStorage.getItem('token')
         })
         .then((response) => {
+          var index = this.posts.findIndex((element)=>{
+            if(element._id == id){
+              return element
+            }
+          })
+          this.posts[index].love.unshift({user:''})
           $('#loading').hide();
           this.title = 'Love Success';
           this.message = 'You have successfully love this post';
@@ -528,11 +515,11 @@ Vue.component('file-upload', {
       data.append('posted_by', localStorage.getItem('token'));
       data.append('imageFile', document.getElementById('fileuploader').files[0]);
       axios.post('https://lokilokostudio.tk/api/posts', data)
-        .then((res)=> {
+        .then((res) => {
           $('#loading').hide();
           this.$emit('postbarunih', res.data.data)
         })
-        .catch((err)=> {
+        .catch((err) => {
           $('#loading').hide();
           console.log(err)
         });
