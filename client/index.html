@@ -27,12 +27,89 @@
 
 <body>
   <div id="app">
+    <form-register></form-register>
     <form-login></form-login>
   </div>
 
 
 </body>
 
+<script src="script.js"></script>
+
+<script>
+  $(document).ready(function() {
+    $('.ui.form')
+      .form({
+        fields: {
+          name: {
+            identifier: 'name',
+            rules: [
+              {
+                type   : 'empty',
+                prompt : 'Please enter your name'
+              }
+            ]
+          },
+
+          username: {
+            identifier: 'username',
+            rules: [
+              {
+                type   : 'empty',
+                prompt : 'Please enter a username'
+              }
+            ]
+          },
+          password: {
+            identifier: 'password',
+            rules: [
+              {
+                type   : 'empty',
+                prompt : 'Please enter a password'
+              },
+              {
+                type   : 'minLength[4]',
+                prompt : 'Your password must be at least {ruleValue} characters'
+              }
+            ]
+          },
+          password2: {
+            identifier: 'password2',
+            rules: [
+              {
+                type   : 'empty',
+                prompt : 'Please enter a password'
+              },
+              {
+                type   : 'match[password]',
+                prompt : 'Your password did not match '
+              }
+            ]
+          },
+          terms: {
+            identifier: 'terms',
+            rules: [
+              {
+                type   : 'checked',
+                prompt : 'You must agree to the terms and conditions'
+              }
+            ]
+          }
+        }
+    })
+  ;
+  });
+
+  $('button[type="submit"]').click(function(e) {
+     return $('.form').form('validate form');
+  });
+
+  $(document).ready(
+    function () {
+        $('.ui.checkbox')
+                .checkbox()
+                ;
+    });
 <script src="script.js"></script>
 <script>
   $(document).ready(function() {
