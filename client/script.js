@@ -7,12 +7,10 @@ Vue.component('form-register', {
       <h2 class="ui teal image header">
         <img src="https://upload.wikimedia.org/wikipedia/commons/f/f1/Vue.png" class="ui large image">
         <div class="content">
-          Sign Up
-        </div>
+          Sign Up        </div>
       </h2>
       <form class="ui large form">
         <div class="ui stacked segment">
-
           <div class="field">
             <div class="ui left icon input">
               <i class="user icon"></i>
@@ -33,14 +31,12 @@ Vue.component('form-register', {
               <input type="text" name="email" placeholder="E-mail address">
             </div>
           </div>
-
           <div class="field">
             <div class="ui left icon input">
-              <i class="lock icon"></i>
-              <input type="password" name="password" placeholder="Password">
+              <i class="user icon"></i>
+              <input type="text" name="email" placeholder="E-mail address">
             </div>
           </div>
-
           <div class="field">
             <div class="ui left icon input">
               <i class="lock icon"></i>
@@ -54,20 +50,12 @@ Vue.component('form-register', {
               <label>I agree to the terms and conditions</label>
             </div>
           </div>
-
-
           <div class="ui fluid large teal submit button">Sign Up</div>
-        </div>
-        <div class="ui error message"></div>
-      </form>
-      <div class="ui message">
+          <div class="ui fluid large tea
         Have account: <a href="#">Login</a>
       </div>
     </div>
   </div>
-
-</div>`,})
-
 new Vue({
   el: '#app',
 })
