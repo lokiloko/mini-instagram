@@ -9,8 +9,27 @@
   <script src="semantic/dist/semantic.min.js"></script>
   <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
   <script src="https://unpkg.com/vue"></script>
+  <script>
+    window.fbAsyncInit = function() {
+      FB.init({
+        appId: '507229999655345',
+        cookie: true, // enable cookies to allow the server to access
+        // the session
+        xfbml: true, // parse social plugins on this page
+        version: 'v2.8' // use graph api version 2.8
+      });
+    };
+    (function(d, s, id) {
+      var js, fjs = d.getElementsByTagName(s)[0];
+      if (d.getElementById(id)) return;
+      js = d.createElement(s);
+      js.id = id;
+      js.src = "//connect.facebook.net/en_US/sdk.js";
+      fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));
+  </script>
   <style type="text/css">
-    body {
+    /*body {
       background-color: #DADADA;
     }
     body > .grid {
@@ -22,20 +41,88 @@
     .column {
       max-width: 450px;
     }
+    .grid {
+      height: 100%;
+    }*/
+    .form {}
+
+    .image {
+      margin-top: -100px;
+    }
+
+    .column {
+      height: 500px;
+      width: 850px;
+    }
+
+    .header-menu {
+      background-color: white !important;
+    }
+
+    .login-heula {
+      background-color: #DADADA;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .apa {
+      width: 50%;
+    }
+
+    #overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: white;
+      opacity: 0.6;
+      z-index: 100;
+    }
+
+    #loading {
+      position: fixed;
+      z-index: 999;
+      margin: auto;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      right: 0;
+      background: url('https://media.giphy.com/media/13DlyUxneed3Nu/giphy.gif') no-repeat center center fixed;
+      -webkit-background-size: cover;
+      -moz-background-size: cover;
+      -o-background-size: cover;
+      background-size: cover;
+    }
+    .modal-style {
+      margin: -5px 50px 50px 50px;
+    }
   </style>
 </head>
 
 <body>
   <div id="app">
-    <form-register></form-register>
-    <form-login></form-login>
+    <loader></loader>
+    <form-register id="form-register" style="display:none"></form-register>
+    <form-login id="form-login"></form-login>
+    <menu-index id="menu-index"></menu-index>
   </div>
 
 
 </body>
 
 <script src="script.js"></script>
-
+<script>
+  if (localStorage.getItem('token')) {
+    $('#form-login').hide();
+    $('#menu-index').show()
+  } else {
+    $('#menu-index').hide()
+    $('#login-form').show();
+  }
+</script>
 <script>
   $(document).ready(function() {
     $('.ui.form')
@@ -110,19 +197,19 @@
                 .checkbox()
                 ;
     });
-<script src="script.js"></script>
+</script>
 <script>
   $(document).ready(function() {
     $('.ui.form').form({
       fields: {
-        email: {
-          identifier  : 'email',
+        username: {
+          identifier  : 'username',
           rules: [{
-            type   : 'empty',
-            prompt : 'Please enter your e-mail'
+            type   : 'text',
+            prompt : 'Please enter your username'
           },{
-            type   : 'email',
-            prompt : 'Please enter a valid e-mail'
+            type   : 'text',
+            prompt : 'Please enter a valid username'
           }]
         },
         password: {
@@ -138,6 +225,9 @@
       }
     });
   });
+  $('#upload-foto').click(function() {
+    $('#new-post').modal('show');
+  })
 </script>
 
 </html>
